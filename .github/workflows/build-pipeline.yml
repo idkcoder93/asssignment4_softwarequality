@@ -16,35 +16,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up python 3.7
+
+    - name: Set up Python 3.7
       uses: actions/setup-python@v2
       with:
         python-version: 3.7
+
     - name: Install dependencies
       run: |
         cd src
         python -m pip install --upgrade pip
         pip install coverage
-        if  [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Run Unit Tests and generate coverage report
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Run Unit Tests and Generate Coverage Report
       run: |
         cd src
         python -m unittest -v
         coverage run -m unittest
         coverage report
         coverage html
-    - name: Archive code coverage html report
+
+    - name: Archive Code Coverage HTML Report
       uses: actions/upload-artifact@v3
       with:
         name: code-coverage-report
         path: src/htmlcov
-    - name: Run package creation
+
+    - name: Build the Package and Create .whl File
       run: |
         cd src
         python -m pip install --user --upgrade build
         python -m build
-    - name: Archive package
+
+    - name: Archive the .whl Package
       uses: actions/upload-artifact@v3
       with:
-        name: awesome-calculator
-        path: src/dist
+        name: awesome-calculator-package
+        path: src/dist/*.whl
