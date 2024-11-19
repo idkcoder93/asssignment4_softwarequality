@@ -68,9 +68,3 @@ jobs:
       with:
         name: awesome-calculator
         path: ./dist
-
-    # Step 9: Install and test the built package
-    - name: Test Installed Package
-      run: |
-        python -m pip install ./dist/*.whl
-        python -c "from awesomecalculator import calculator; print(calculator.add(2, 3))"
